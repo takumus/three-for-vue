@@ -1,5 +1,5 @@
 {
-  "name": "three-for-vue",
+  "name": "@takumus/three-for-vue",
   "version": "1.0.6",
   "description": "three.js for vue",
   "license": "MIT",
