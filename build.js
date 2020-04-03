@@ -5,7 +5,6 @@ const tasks = [
   ['rimraf', './dist'],
   ['rollup', '-c', 'rollup-cjs.config.js'],
   ['rollup', '-c', 'rollup-esm.config.js'],
-  ['rollup', '-c', 'rollup-browser.config.js'],
   ['tsc', '--emitDeclarationOnly']
 ];
 function buildParallel(tasks) { tasks.forEach((task) => build(task)); };
