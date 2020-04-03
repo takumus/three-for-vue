@@ -53,6 +53,8 @@ export default abstract class ThreeForVue {
     if (!this._renderer) return;
     if (this._width == this._renderer.domElement.width && this._height == this._renderer.domElement.height) return;
     this._renderer.setSize(this._width, this._height, false);
+    this._renderer.domElement.style.width = `${this._width}px`;
+    this._renderer.domElement.style.height = `${this._height}px`;
     this.resize(this._width, this._height);
   }
   public abstract animate(deltaTime: number): void;
