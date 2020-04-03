@@ -7,7 +7,7 @@ npm install @takumus/three-for-vue
 ### Create class
 simpleBox.ts
 ```ts
-import ThreeForVue from './@threeForVue';
+import ThreeForVue from '@takumus/three-for-vue';
 import * as THREE from "three";
 export default class SimpleBox extends ThreeForVue {
   private scene: THREE.Scene;
