@@ -1,0 +1,53 @@
+{
+  "name": "three-for-vue",
+  "version": "1.0.6",
+  "description": "three.js for vue",
+  "license": "MIT",
+  "author": {
+    "name": "takumus",
+    "email": "me@takum.us"
+  },
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/types/index.d.ts",
+  "scripts": {
+    "prebuild": "rimraf ./dist",
+    "build": "node ./build",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch"
+  },
+  "dependencies": {
+    "three": "^0.115.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.8.7",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "7.8.3",
+    "@babel/preset-env": "7.8.7",
+    "@babel/preset-typescript": "7.8.3",
+    "chalk": "^3.0.0",
+    "rimraf": "^3.0.2",
+    "rollup": "2.0.2",
+    "rollup-plugin-babel": "4.4.0",
+    "rollup-plugin-commonjs": "10.1.0",
+    "rollup-plugin-node-resolve": "5.2.0",
+    "typescript": "3.8.3"
+  },
+  "buildSettings": {
+    "entry": "./src/index.ts",
+    "include": "./src/**/*",
+    "browser": {
+      "name": "ThreeForVue",
+      "file": "./dist/index.iife.js",
+      "exportWithNodeModules": true
+    },
+    "cjs": {
+      "exportWithNodeModules": false
+    },
+    "esm": {
+      "exportWithNodeModules": false
+    },
+    "outputIgnoreLog": false,
+    "buildMode": "paralell"
+  }
+}

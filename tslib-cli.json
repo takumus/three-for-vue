@@ -1,0 +1,15 @@
+{
+  "projectName": "three-for-vue",
+  "browserGlobalName": "ThreeForVue",
+  "browserExportWithNodeModules": true,
+  "cjsExportWithNodeModules": false,
+  "esmExportWithNodeModules": false,
+  "destDir": "./dist",
+  "entryFile": "./src/index.ts",
+  "entryFileName": "index",
+  "entryDir": "./src",
+  "author": {
+    "name": "takumus",
+    "email": "me@takum.us"
+  }
+}
