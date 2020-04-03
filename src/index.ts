@@ -41,11 +41,9 @@ export default abstract class ThreeForVue {
     if (this._renderer) {
       this._renderer.dispose();
       this._renderer = null;
-      console.log("--- renderer destroyed");
     }
   }
   private createRenderer(canvas: HTMLCanvasElement) {
-    console.log("+++ renderer created");
     this._renderer = new THREE.WebGLRenderer({
       antialias: true,
       canvas: canvas
