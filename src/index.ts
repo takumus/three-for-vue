@@ -3,6 +3,10 @@ export default abstract class ThreeForVue {
   public currentScene?: THREE.Scene | null;
   public currentCamera?: THREE.Camera | null;
   public resizeInterval: number;
+  public mouseX: number = 0;
+  public mouseY: number = 0;
+  public mouseRatioX: number = 0;
+  public mouseRatioY: number = 0;
   private _renderer?: THREE.WebGLRenderer | null;
   private _width: number;
   private _height: number;
@@ -55,8 +59,41 @@ export default abstract class ThreeForVue {
     this._renderer.setSize(this._width, this._height, false);
     this._renderer.domElement.style.width = `${this._width}px`;
     this._renderer.domElement.style.height = `${this._height}px`;
-    this.resize(this._width, this._height);
+    this.resize(this._renderer.domElement.width, this._renderer.domElement.height);
   }
+  private createMouseEvent() {
+    if (!this._renderer) return;
+    this._renderer.domElement.addEventListener('mousedown', this._mouseDown);
+    this._renderer.domElement.addEventListener('mousemove', this._mouseMove);
+    this._renderer.domElement.addEventListener('mouseup', this._mouseUp);
+  }
+  private removeMouseEvent() {
+    if (!this._renderer) return;
+    this._renderer.domElement.removeEventListener('mousedown', this._mouseDown);
+    this._renderer.domElement.removeEventListener('mousemove', this._mouseMove);
+    this._renderer.domElement.removeEventListener('mouseup', this._mouseUp);
+  }
+  private _mouseDown = (event: MouseEvent) => {
+    this.updateMouse(event);
+    this.mouseDown(event);
+  }
+  private _mouseMove = (event: MouseEvent) => {
+    this.updateMouse(event);
+    this.mouseMove(event);
+  }
+  private _mouseUp = (event:MouseEvent) => {
+    this.mouseUp(event);
+  }
+  private updateMouse(event: MouseEvent) {
+    if (!this._renderer) return;
+    this.mouseRatioX = event.offsetX / this._width;
+    this.mouseRatioY = event.offsetY / this._height;
+    this.mouseX = this.mouseRatioX * this._renderer.domElement.width;
+    this.mouseY = this.mouseRatioY * this._renderer.domElement.height;
+  }
+  public mouseDown(event: MouseEvent) { event; }
+  public mouseMove(event: MouseEvent) { event; }
+  public mouseUp(event: MouseEvent) { event; }
   public abstract animate(deltaTime: number): void;
   public abstract resize(width: number, height: number): void;
   public setSize(width: number, height: number, force: boolean = false) {
@@ -69,13 +106,15 @@ export default abstract class ThreeForVue {
     }
   }
   public mount(canvas: HTMLCanvasElement) {
-    this.destroyRenderer();
+    this.destroy();
     this.createRenderer(canvas);
+    this.createMouseEvent();
     this.changeSize();
     this.animating = true;
     this.execAnimate(-1);
   }
   public destroy() {
+    this.removeMouseEvent();
     this.destroyRenderer();
     this.animating = false;
   }
