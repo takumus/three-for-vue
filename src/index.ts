@@ -7,6 +7,7 @@ export default abstract class ThreeForVue {
   public mouseY: number = 0;
   public mouseRatioX: number = 0;
   public mouseRatioY: number = 0;
+  public preventMouseEvents: boolean;
   private _renderer?: THREE.WebGLRenderer | null;
   private _width: number;
   private _height: number;
@@ -20,6 +21,7 @@ export default abstract class ThreeForVue {
     this.resizeTime = 0;
     this.animating = false;
     this.prevTime = 0;
+    this.preventMouseEvents = false;
   }
   private execAnimate(time: number) {
     if (!this.animating) return;
@@ -80,6 +82,7 @@ export default abstract class ThreeForVue {
     this._renderer.domElement.removeEventListener('touchend', this._touchEnd);
   }
   private _touchStart = (event: TouchEvent) => {
+    if (this.preventMouseEvents) event.preventDefault();
     this.updateMouse(event.touches[0]);
     this.mouseDown();
   }
@@ -92,6 +95,7 @@ export default abstract class ThreeForVue {
     this.mouseUp();
   }
   private _mouseDown = (event: MouseEvent) => {
+    if (this.preventMouseEvents) event.preventDefault();
     this.updateMouse(event);
     this.mouseDown();
   }
