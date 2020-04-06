@@ -11,9 +11,9 @@
   "module": "./dist/index.esm.js",
   "types": "./dist/types/index.d.ts",
   "scripts": {
-    "prepublish": "build",
     "prebuild": "rimraf ./dist",
     "build": "node ./build",
+    "prepublish": "npm run build",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch"
   },
