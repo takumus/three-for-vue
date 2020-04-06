@@ -64,36 +64,56 @@ export default abstract class ThreeForVue {
   private createMouseEvent() {
     if (!this._renderer) return;
     this._renderer.domElement.addEventListener('mousedown', this._mouseDown);
-    this._renderer.domElement.addEventListener('mousemove', this._mouseMove);
-    this._renderer.domElement.addEventListener('mouseup', this._mouseUp);
+    document.body.addEventListener('mousemove', this._mouseMove);
+    document.body.addEventListener('mouseup', this._mouseUp);
+    this._renderer.domElement.addEventListener('touchstart', this._touchStart);
+    this._renderer.domElement.addEventListener('touchmove', this._touchMove);
+    this._renderer.domElement.addEventListener('touchend', this._touchEnd);
   }
   private removeMouseEvent() {
     if (!this._renderer) return;
     this._renderer.domElement.removeEventListener('mousedown', this._mouseDown);
-    this._renderer.domElement.removeEventListener('mousemove', this._mouseMove);
-    this._renderer.domElement.removeEventListener('mouseup', this._mouseUp);
+    document.body.removeEventListener('mousemove', this._mouseMove);
+    document.body.removeEventListener('mouseup', this._mouseUp);
+    this._renderer.domElement.removeEventListener('touchstart', this._touchStart);
+    this._renderer.domElement.removeEventListener('touchmove', this._touchMove);
+    this._renderer.domElement.removeEventListener('touchend', this._touchEnd);
+  }
+  private _touchStart = (event: TouchEvent) => {
+    this.updateMouse(event.touches[0]);
+    this.mouseDown();
+  }
+  private _touchMove = (event: TouchEvent) => {
+    this.updateMouse(event.touches[0]);
+    this.mouseMove();
+  }
+  private _touchEnd = (event: TouchEvent) => {
+    event;
+    this.mouseUp();
   }
   private _mouseDown = (event: MouseEvent) => {
     this.updateMouse(event);
-    this.mouseDown(event);
+    this.mouseDown();
   }
   private _mouseMove = (event: MouseEvent) => {
     this.updateMouse(event);
-    this.mouseMove(event);
+    this.mouseMove();
   }
   private _mouseUp = (event:MouseEvent) => {
-    this.mouseUp(event);
+    event;
+    this.mouseUp();
   }
-  private updateMouse(event: MouseEvent) {
+  private updateMouse(event: {clientX: number, clientY: number}) {
     if (!this._renderer) return;
-    this.mouseRatioX = event.offsetX / this._width;
-    this.mouseRatioY = event.offsetY / this._height;
+    const rect = this._renderer.domElement.getBoundingClientRect();
+    this.mouseRatioX = (event.clientX - rect.left) / this._width;
+    this.mouseRatioY = (event.clientY - rect.top) / this._height;
     this.mouseX = this.mouseRatioX * this._renderer.domElement.width;
     this.mouseY = this.mouseRatioY * this._renderer.domElement.height;
   }
-  public mouseDown(event: MouseEvent) { event; }
-  public mouseMove(event: MouseEvent) { event; }
-  public mouseUp(event: MouseEvent) { event; }
+  public mouseDown() {}
+  public mouseMove() {}
+  public mouseUp() {}
   public abstract animate(deltaTime: number): void;
   public abstract resize(width: number, height: number): void;
   public setSize(width: number, height: number, force: boolean = false) {
